@@ -30,7 +30,7 @@ function get_random_color() {
 
                 //config on draw
                 floor_img : "./images/floor/floor1.png",
-                "hero_img" : "./images/hero/small/hero_bot.png",
+                hero_img : "./images/hero/small/hero_bot.png",
 
                 bordures : [216,215,214,213,212,211,210,
                     204,192,180,168,156,
@@ -51,8 +51,8 @@ function get_random_color() {
             }};
 
         images = {
-            'out' : "./images/floor/out.png",
-            "floor_levels" : {
+            out : "./images/floor/out.png",
+            floor_levels : {
                 1:{
                     "floor":"./images/floor/floor1.png"
                 },
@@ -69,9 +69,9 @@ function get_random_color() {
                     "floor":"./images/floor/floor5.png"
                 }
             },
-            'floor' : "",
-            "hero" : "",
-            "hero_levels" : {
+            floor : "",
+            hero : "",
+            hero_levels : {
                 1 : {
                     "hero_top" : "./images/hero/small/hero_top.png",
                     "hero_left" : "./images/hero/small/hero_left.png",
@@ -97,13 +97,13 @@ function get_random_color() {
                     "hero_bot" : "./images/hero/rage/hero_bot.png"
                 }
             },
-            "rock" : "./images/items/rock.png",
-            "toggle_rock_on" : "./images/items/toggle_rock_on.png",
-            "toggle_rock_off" : "./images/items/toggle_rock_off.png",
-            "bomb" : "./images/items/bomb.png",
-            "hard_rock" : "./images/items/hard_rock.png",
-            "button_off" : "./images/items/button_off.png",
-            "button_on" : "./images/items/button_on.png"
+            rock : "./images/items/rock.png",
+            toggle_rock_on : "./images/items/toggle_rock_on.png",
+            toggle_rock_off : "./images/items/toggle_rock_off.png",
+            bomb : "./images/items/bomb.png",
+            hard_rock : "./images/items/hard_rock.png",
+            button_off : "./images/items/button_off.png",
+            button_on : "./images/items/button_on.png"
         };
 
         texture = function (x,y,type) {
