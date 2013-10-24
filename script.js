@@ -23,6 +23,8 @@ function get_random_color() {
                 $canvas : '',
 
                 has_bomb : 'false',
+                lose : 'false',
+                win : 'false',
 
                 context : '',
 
@@ -132,7 +134,8 @@ function get_random_color() {
             button_off : "./images/items/button_off.png",
             button_on : "./images/items/button_on.png",
             fake_goal : "./images/food/badFood.png",
-            win : "./images/win.png"
+            win : "./images/win.png",
+            gameover : "./images/gameover.png"
         };
 
         texture = function (x,y,type) {
@@ -268,7 +271,7 @@ function get_random_color() {
             },
             gameLoop : function (key) {
 
-                if($.inArray(current_lvl,levels_win) != -1)
+                if($.inArray(current_lvl,levels_win) != -1 || globals[current_lvl].lose == "true")
                     return;
 
                 var hero = globals[current_lvl].hero;
@@ -338,7 +341,7 @@ function get_random_color() {
                     || next_block.type == "toggle_rock_off"
                     || next_block.type == "hard_rock"
                     || next_block.type == "goal_suit"
-                    || next_block.type == "fake_goal"){
+                    ){
                     return;
                 }
                 else if(hero_block.on == "button_on" && next_block.type == "toggle_rock_on"){
@@ -371,7 +374,7 @@ function get_random_color() {
                         || next_rock_block.type == "toggle_rock_off"
                         || next_rock_block.type == "hard_rock"
                         || next_rock_block.type == "goal_suit"
-                        || next_rock_block.type == "fake_goal")
+                        )
                         return;
 
                     if(next_block.on == "button_on" && next_rock_block.type == "toggle_rock_on"){
@@ -404,11 +407,14 @@ function get_random_color() {
                     delNext = true;
                     globals[current_lvl].has_bomb = "true";
                 }
+                else if(next_block.type == "fake_goal"){
+                    delNext = true;
+                    globals[current_lvl].lose = "true";
+                }
                 else if(next_block.type == "goal"){
                     delNext = true;
                     levels_win.push(current_lvl);
-                    globals[current_lvl].context.drawImage(images["win"],0,0);
-                    return;
+                    globals[current_lvl].win = "true";
                 }
 
                 if(hero_block.on == "bomb"){
@@ -504,6 +510,13 @@ function get_random_color() {
 
                 // reset number case of hero
                 globals[current_lvl].hero = next;
+
+                if(globals[current_lvl].win == "true"){
+                    globals[current_lvl].context.drawImage(images["win"],0,0);
+                }
+                else if(globals[current_lvl].lose == "true"){
+                    globals[current_lvl].context.drawImage(images["gameover"],0,0);
+                }
             }
         };
 
