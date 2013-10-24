@@ -3,7 +3,7 @@
   <component name="JSLintConfiguration">
     <option indent="4" />
     <option maxerr="50" />
-    <option predef="jQuery, console, alert, window, document" />
+    <option predef="jQuery, console, alert, window, document, $" />
   </component>
 </project>
 
