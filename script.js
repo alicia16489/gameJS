@@ -12,9 +12,11 @@ function get_random_color() {
 
     var CMB = {};
     (function (CMB) {
-        var globals, texture, images, current_lvl, hero, item, load;
+        var globals, texture, images, current_lvl, hero, item, load, levels_win;
 
         load = 0;
+
+        levels_win = [];
 
         globals = {
             1:{
@@ -31,6 +33,7 @@ function get_random_color() {
                 //config on draw
                 floor_img : "./images/floor/floor1.png",
                 hero_img : "./images/hero/small/hero_bot.png",
+                goal_img : "./images/food/food1.png",
 
                 bordures : [216,215,214,213,212,211,210,
                     204,192,180,168,156,
@@ -71,6 +74,24 @@ function get_random_color() {
             },
             floor : "",
             hero : "",
+            goal : "",
+            goal_levels : {
+                1:{
+                    "food":"./images/food/food1.png"
+                },
+                2:{
+                    "food":"./images/food/food2.png"
+                },
+                3:{
+                    "food":"./images/food/food3.png"
+                },
+                4:{
+                    "food":"./images/food/food4.png"
+                },
+                5:{
+                    "food":"./images/food/food5.png"
+                }
+            },
             hero_levels : {
                 1 : {
                     "hero_top" : "./images/hero/small/hero_top.png",
@@ -79,18 +100,24 @@ function get_random_color() {
                     "hero_bot" : "./images/hero/small/hero_bot.png"
                 },
                 2 : {
+                    "hero_top" : "./images/hero/small/hero_top.png",
+                    "hero_left" : "./images/hero/small/hero_left.png",
+                    "hero_right" : "./images/hero/small/hero_right.png",
+                    "hero_bot" : "./images/hero/small/hero_bot.png"
+                },
+                3 : {
                     "hero_top" : "./images/hero/medium/hero_top.png",
                     "hero_left" : "./images/hero/medium/hero_left.png",
                     "hero_right" : "./images/hero/medium/hero_right.png",
                     "hero_bot" : "./images/hero/medium/hero_bot.png"
                 },
-                3 : {
+                4 : {
                     "hero_top" : "./images/hero/tall/hero_top.png",
                     "hero_left" : "./images/hero/tall/hero_left.png",
                     "hero_right" : "./images/hero/tall/hero_right.png",
                     "hero_bot" : "./images/hero/tall/hero_bot.png"
                 },
-                4 : {
+                5 : {
                     "hero_top" : "./images/hero/rage/hero_top.png",
                     "hero_left" : "./images/hero/rage/hero_left.png",
                     "hero_right" : "./images/hero/rage/hero_right.png",
@@ -103,7 +130,9 @@ function get_random_color() {
             bomb : "./images/items/bomb.png",
             hard_rock : "./images/items/hard_rock.png",
             button_off : "./images/items/button_off.png",
-            button_on : "./images/items/button_on.png"
+            button_on : "./images/items/button_on.png",
+            fake_goal : "./images/food/badFood.png",
+            win : "./images/win.png"
         };
 
         texture = function (x,y,type) {
@@ -159,14 +188,16 @@ function get_random_color() {
                 //config texture lvl in object
                 images.hero = globals[lvl].hero_img;
                 images.floor = globals[lvl].floor_img;
+                images.goal = globals[lvl].goal_img;
+
                 // async preload imgs + draw
                 CMB.game.loadImages(images);
                 //set objects for config lvl
                 globals[lvl].hero_img = images.hero;
                 globals[lvl].floor_img = images.floor;
+                globals[lvl].goal_img = images.goal;
 
                 console.log(images);
-                console.log(globals[lvl].hero_img);
             },
             draw : function () {
                 var lvl = current_lvl;
@@ -236,6 +267,10 @@ function get_random_color() {
                 }
             },
             gameLoop : function (key) {
+
+                if($.inArray(current_lvl,levels_win) != -1)
+                    return;
+
                 var hero = globals[current_lvl].hero;
                 var hero_block = globals[current_lvl].entities.cases[hero];
                 var next;
@@ -280,10 +315,21 @@ function get_random_color() {
                         next = hero - 1;
                     }
                     var next_block = globals[current_lvl].entities.cases[next];
-                    console.log(globals[current_lvl].has_bomb);
-                    console.log(next_block.type);
                     if(next_block.type == "hard_rock" && globals[current_lvl].has_bomb == "true"){
-                        console.log(globals[current_lvl].has_bomb);
+                        globals[current_lvl].context.drawImage(images["floor"],(next_block.x * 50),(next_block.y * 50));
+
+                        var floor = new item(next_block.x,next_block.y,"fake_goal","floor");
+                        globals[current_lvl].context.drawImage(images[next_block.on],(next_block.x * 50),(next_block.y * 50));
+                        globals[current_lvl].entities.cases[next] = floor;
+
+                        if(next_block.on == "fake_goal"){
+                            var goal = globals[current_lvl].goal_suit[0];
+                            var goal_case = globals[current_lvl].entities.cases[goal];
+                            var floor = new item(goal_case.x,goal_case.y,"goal","floor");
+                            globals[current_lvl].context.drawImage(images["floor"],(goal_case.x * 50),(goal_case.y * 50));
+                            globals[current_lvl].context.drawImage(images[floor.type],(goal_case.x * 50),(goal_case.y * 50));
+                            globals[current_lvl].entities.cases[goal] = floor;
+                        }
                     }
                 }
 
@@ -291,7 +337,8 @@ function get_random_color() {
                 if(next_block.type == "bordure"
                     || next_block.type == "toggle_rock_off"
                     || next_block.type == "hard_rock"
-                    || next_block.type == "goal_suit"){
+                    || next_block.type == "goal_suit"
+                    || next_block.type == "fake_goal"){
                     return;
                 }
                 else if(hero_block.on == "button_on" && next_block.type == "toggle_rock_on"){
@@ -317,14 +364,14 @@ function get_random_color() {
                     else if(key == 40){
                         next_rock = next - 1;
                     }
-
                     var next_rock_block = globals[current_lvl].entities.cases[next_rock];
 
                     if(next_rock_block.type == "bordure"
                         || next_rock_block.type == "rock"
                         || next_rock_block.type == "toggle_rock_off"
                         || next_rock_block.type == "hard_rock"
-                        || next_rock_block.type == "goal_suit")
+                        || next_rock_block.type == "goal_suit"
+                        || next_rock_block.type == "fake_goal")
                         return;
 
                     var type;
@@ -347,6 +394,12 @@ function get_random_color() {
                 else if(next_block.type == "bomb"){
                     delNext = true;
                     globals[current_lvl].has_bomb = "true";
+                }
+                else if(next_block.type == "goal"){
+                    delNext = true;
+                    levels_win.push(current_lvl);
+                    globals[current_lvl].context.drawImage(images["win"],0,0);
+
                 }
 
                 if(hero_block.on == "bomb"){
