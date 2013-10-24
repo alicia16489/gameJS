@@ -1,25 +1,35 @@
-function get_random_color() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-        color += letters[Math.round(Math.random() * 15)];
-    }
-    return color;
-}
-
 (function ($) {
     "use strict";
 
+    function get_random_color() {
+        var letters = '0123456789ABCDEF'.split(''),
+            color = '#',
+            i;
+        for (i = 0; i < 6; i += 1) {
+            color += letters[Math.round(Math.random() * 15)];
+        }
+        return color;
+    }
+
     var CMB = {};
     (function (CMB) {
-        var globals, texture, images, current_lvl, hero, item, load, levels_win;
-
+        var globals, texture, images, current_lvl, hero, item, load, levels_win, config, mappingCanvas;
         load = 0;
-
         levels_win = [];
 
+        config = {
+            hero_img : {
+                small : "./images/hero/small/hero_bot.png",
+                medium : "./images/hero/medium/hero_bot.png",
+                tall : "./images/hero/tall/hero_bot.png",
+                rage : "./images/hero/rage/hero_bot.png"
+            }
+        };
+
+        mappingCanvas = [];
+
         globals = {
-            1:{
+            1: {
                 $canvas : '',
 
                 has_bomb : 'false',
@@ -34,8 +44,43 @@ function get_random_color() {
 
                 //config on draw
                 floor_img : "./images/floor/floor1.png",
-                hero_img : "./images/hero/small/hero_bot.png",
+                hero_img : config.hero_img.small,
                 goal_img : "./images/food/food1.png",
+
+                bordures : [153, 152, 151, 150, 149, 148, 147,
+                    141, 129, 117, 105, 93,
+                    135, 123, 111, 99, 87,
+                    81, 80, 79, 78, 77, 76, 75],
+                hero : [112],
+                rock : [127, 103, 91, 125],
+                bomb : [88],
+                hard_rock : [140],
+                hard_rock_on : {140: "fake_goal"},
+                button : [113, 137],
+                toggle_rock : [138, 126, 114, 104, 92,
+                    100, 101, 89, 102],
+                toggle_rock_link : {113: [138, 126, 114, 104, 92],
+                    137: [ 100, 101, 89, 102]},
+                goal_suit: [139],
+                goal : []
+            },
+            2:{
+                $canvas : '',
+
+                has_bomb : 'false',
+                lose : 'false',
+                win : 'false',
+
+                context : '',
+
+                entities : {
+                    cases : []
+                },
+
+                //config on draw
+                floor_img : "./images/floor/floor2.png",
+                hero_img : config.hero_img.medium,
+                goal_img : "./images/food/food2.png",
 
                 bordures : [153,152,151,150,149,148,147,
                     141,129,117,105,93,
@@ -48,12 +93,13 @@ function get_random_color() {
                 hard_rock_on : {140:"fake_goal"},
                 button : [113,137],
                 toggle_rock : [138,126,114,104,92,
-                100,101,89,102],
+                    100,101,89,102],
                 toggle_rock_link : {113:[138,126,114,104,92],
-                137:[100,101,89,102]},
+                    137:[100,101,89,102]},
                 goal_suit:[139],
                 goal : []
-            }};
+            }
+        };
 
         images = {
             out : "./images/floor/out.png",
@@ -200,7 +246,8 @@ function get_random_color() {
                 globals[lvl].floor_img = images.floor;
                 globals[lvl].goal_img = images.goal;
 
-                console.log(images);
+                console.log(globals[lvl]);
+                console.log(mappingCanvas);
             },
             draw : function () {
                 var lvl = current_lvl;
@@ -261,6 +308,12 @@ function get_random_color() {
                         var object = new texture(row,col,type);
 
                     globals[lvl].entities.cases[i] = object;
+
+                    console.log($.isArray(mappingCanvas[row]));
+                    if($.isArray(mappingCanvas[row]))
+                        mappingCanvas[row] = [];
+
+                    mappingCanvas[row].push(col);
 
                     col++;
                     if (col > 11) {
@@ -520,15 +573,43 @@ function get_random_color() {
             }
         };
 
+
+
     })(CMB);
 
-    CMB.game.init(1);
+    CMB.game.init(2);
     $(window).keydown(function(e){
         var key = e.keyCode;
         if(key == 37 || key == 38 || key == 39 || key == 40 || key == 66){
             CMB.game.gameLoop(key);
         }
     });
+
+    function ooo(x,y){
+        console.log(x,y);
+        var gameX, gameY;
+
+        gameX = parseInt(x/50) + 1;
+        gameY = parseInt(y/50) + 1;
+
+        console.log(gameX, gameY);
+
+        console.log(216 - (gameX * gameY));
+    }
+
+    function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+        };
+    }
+    var canvas = document.getElementById('canvas');
+    canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = getMousePos(canvas, evt);
+        ooo(mousePos.x,mousePos.y);
+    }, false);
+
 
 })(jQuery);
 
