@@ -35,21 +35,21 @@ function get_random_color() {
                 hero_img : "./images/hero/small/hero_bot.png",
                 goal_img : "./images/food/food1.png",
 
-                bordures : [216,215,214,213,212,211,210,
-                    204,192,180,168,156,
-                    198,186,174,162,150,
-                    144,143,142,141,140,139,138],
-                hero : [175],
-                rock : [190,166,154,188],
-                bomb : [151],
-                hard_rock : [203],
-                hard_rock_on : {203:"fake_goal"},
-                button : [176,200],
-                toggle_rock : [201,189,177,167,155,
-                163,164,152,165],
-                toggle_rock_link : {176:[201,189,177,167,155],
-                200:[163,164,152,165]},
-                goal_suit:[202],
+                bordures : [153,152,151,150,149,148,147,
+                    141,129,117,105,93,
+                    135,123,111,99,87,
+                    81,80,79,78,77,76,75],
+                hero : [112],
+                rock : [127,103,91,125],
+                bomb : [88],
+                hard_rock : [140],
+                hard_rock_on : {140:"fake_goal"},
+                button : [113,137],
+                toggle_rock : [138,126,114,104,92,
+                100,101,89,102],
+                toggle_rock_link : {113:[138,126,114,104,92],
+                137:[100,101,89,102]},
+                goal_suit:[139],
                 goal : []
             }};
 
@@ -374,6 +374,15 @@ function get_random_color() {
                         || next_rock_block.type == "fake_goal")
                         return;
 
+                    if(next_block.on == "button_on" && next_rock_block.type == "toggle_rock_on"){
+                        var arr = globals[current_lvl].toggle_rock_link[next];
+                        console.log(next);
+                        console.log(arr);
+                        if($.inArray(next_rock,arr) != -1){
+                            return;
+                        }
+                    }
+
                     var type;
                     prev = next_block.on;
 
@@ -399,7 +408,7 @@ function get_random_color() {
                     delNext = true;
                     levels_win.push(current_lvl);
                     globals[current_lvl].context.drawImage(images["win"],0,0);
-
+                    return;
                 }
 
                 if(hero_block.on == "bomb"){
