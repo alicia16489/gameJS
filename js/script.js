@@ -38,6 +38,152 @@ function get_random_color() {
                 goal_img : "./images/food/food1.png",
                 map_img : "./images/map/map1.png",
 
+                bordures : [168,156,144,132,120,108,96
+                    ,84,72,60,167,155,71,59,166,70,58,
+                    165,153,69,57,164,152,68,56,163,
+                    151,139,127,115,91,79,67,55,162,
+                    161,160,159,158,157,54,53,52,51,
+                    50,157,145,133,121,109,97,85,73,
+                    61,49],
+                hero : [154],
+                rock : [77],
+                bomb : [],
+                hard_rock : [1],
+                hard_rock_on : {},
+                button : [113],
+                toggle_rock : [107,94,105,118],
+                toggle_rock_link : {113:[107,94,105,118]
+                    },
+                goal_suit:[],
+                goal : [106]
+            },
+            2:{
+                $canvas : '',
+
+                has_bomb : 'false',
+                lose : 'false',
+                win : 'false',
+
+                context : '',
+
+                entities : {
+                    cases : []
+                },
+
+                //config on draw
+                floor_img : "./images/floor/floor2.png",
+                hero_img : "./images/hero/small/hero_bot.png",
+                goal_img : "./images/food/food2.png",
+                map_img : "./images/map/map2.png",
+
+                bordures : [187,175,164,152,141,129,118,106,93,81,68,56,43,31,66,54,89,77,112,100,125,137,150,162],
+                hero : [163],
+                rock : [],
+                bomb : [101],
+                hard_rock : [67],
+                hard_rock_on : {67:"floor"},
+                button : [],
+                toggle_rock : [],
+                toggle_rock_link : {},
+                goal_suit:[],
+                goal : [55]
+            },
+            3:{
+            $canvas : '',
+
+                has_bomb : 'false',
+                lose : 'false',
+                win : 'false',
+
+                context : '',
+
+                entities : {
+                cases : []
+            },
+
+            //config on draw
+            floor_img : "./images/floor/floor3.png",
+                hero_img : "./images/hero/medium/hero_bot.png",
+                goal_img : "./images/food/food3.png",
+                map_img : "./images/map/map3.png",
+
+                bordures : [79,167,155,143,131,119,107,95,83,71,59,58,57,56,55,54,53,52,51,63,75,87,99,111,123,135,147,159,160,161,162,163,164,165,166],
+                hero : [141],
+                rock : [90,78],
+                bomb : [67],
+                hard_rock : [106,93,82],
+                hard_rock_on : {106:"floor",93:"floor",62:"floor"},
+                button : [102,77],
+                toggle_rock : [118,117,116,104,92,80,68,
+                    66],
+                toggle_rock_link : {102:[118,117,116,104,92,80,68],
+                    77:[66]},
+                goal_suit:[],
+                goal : [94]
+            },
+            4:{
+                $canvas : '',
+
+                has_bomb : 'false',
+                lose : 'false',
+                win : 'false',
+
+                context : '',
+
+                entities : {
+                    cases : []
+                },
+
+                //config on draw
+                floor_img : "./images/floor/floor4.png",
+                hero_img : "./images/hero/tall/hero_bot.png",
+                goal_img : "./images/food/food4.png",
+                map_img : "./images/map/map4.png",
+
+                bordures : [215,203,191,179,167,155,
+                    143,131,119,107,95,83,71,59,47,
+                    35,23,11,10,9,8,7,6,5,4,3,2,14,26,
+                    38,50,62,74,86,98,110,122,134,145,
+                    158,170,182,194,206,207,208,209,210,
+                    211,212,213,214,
+                    186,174,173,160,159,138,139,141,129,117,127,115,114,112,111,94,93,92,91,82,81,80,79,78,77],
+                hero : [196],
+                rock : [184,135,125,152],
+                bomb : [22],
+                hard_rock : [163,53],
+                hard_rock_on : {163:"floor",53:"floor"},
+                button : [201,149,146,42],
+                toggle_rock : [76,75,
+                    64,63,
+                    21,33,32,31,19,
+                    34,151,140],
+                toggle_rock_link : {201:[34,151,140],
+                    149:[64,63],
+                    146:[76,75],
+                    42:[21,33,32,31,19]
+                },
+                goal_suit:[],
+                goal : [20]
+            },
+            5:{
+                $canvas : '',
+
+                has_bomb : 'false',
+                lose : 'false',
+                win : 'false',
+
+                context : '',
+
+                entities : {
+                    cases : []
+                },
+
+                //config on draw
+                floor_img : "./images/floor/floor5.png",
+                hero_img : "./images/hero/rage/hero_bot.png",
+                goal_img : "./images/food/food5.png",
+                map_img : "./images/map/map5.png",
+
                 bordures : [153,152,151,150,149,148,147,
                     141,129,117,105,93,
                     135,123,111,99,87,
@@ -49,14 +195,17 @@ function get_random_color() {
                 hard_rock_on : {140:"fake_goal"},
                 button : [113,137],
                 toggle_rock : [138,126,114,104,92,
-                100,101,89,102],
+                    100,101,89,102],
                 toggle_rock_link : {113:[138,126,114,104,92],
-                137:[100,101,89,102]},
+                    137:[100,101,89,102]},
                 goal_suit:[139],
                 goal : []
-            }};
+            },
+
+    };
 
         images = {
+            bordure: "./images/items/bordure.png",
             out : "./images/floor/out.png",
             floor_levels : {
                 1:{
@@ -99,7 +248,7 @@ function get_random_color() {
             map_levels : {
                 1:{
                     "map":"./images/map/map1.png"
-                }/*,
+                },
                 2:{
                     "map":"./images/map/map2.png"
                 },
@@ -111,7 +260,7 @@ function get_random_color() {
                 },
                 5:{
                     "map":"./images/map/map5.png"
-                }*/
+                }
             },
             hero_levels : {
                 1 : {
@@ -237,7 +386,7 @@ function get_random_color() {
                     globals[lvl].context.drawImage(images["floor"],(row * 50),(col * 50));
 
                     if ($.inArray(i,globals[lvl].bordures) != -1) {
-                        globals[lvl].context.drawImage(images["out"],(row * 50),(col * 50));
+                        globals[lvl].context.drawImage(images["bordure"],(row * 50),(col * 50));
                         type = "bordure";
                     }
                     else if($.inArray(i,globals[lvl].hero) != -1){
@@ -267,6 +416,10 @@ function get_random_color() {
                     else if($.inArray(i,globals[lvl].hard_rock) != -1){
                         globals[lvl].context.drawImage(images["hard_rock"],(row * 50),(col * 50));
                         type = "hard_rock";
+                    }
+                    else if($.inArray(i,globals[lvl].goal) != -1){
+                        globals[lvl].context.drawImage(images["goal"],(row * 50),(col * 50));
+                        type = "goal";
                     }
                     else{
                         type = "floor";
@@ -330,7 +483,6 @@ function get_random_color() {
 
                 if(key == 66){
                     var sigh = globals[current_lvl].hero_img.name.replace("hero_","");
-                    console.log(sigh);
                     if(sigh == "left"){
                         next = parseInt(hero) + 12;
                     }
@@ -347,9 +499,11 @@ function get_random_color() {
                     if(next_block.type == "hard_rock" && globals[current_lvl].has_bomb == "true"){
                         globals[current_lvl].context.drawImage(images["floor"],(next_block.x * 50),(next_block.y * 50));
 
-                        var floor = new item(next_block.x,next_block.y,"fake_goal","floor");
+                        var floor = new item(next_block.x,next_block.y,next_block.on);
                         globals[current_lvl].context.drawImage(images[next_block.on],(next_block.x * 50),(next_block.y * 50));
                         globals[current_lvl].entities.cases[next] = floor;
+
+                        globals[current_lvl].has_bomb = "false";
 
                         if(next_block.on == "fake_goal"){
                             var goal = globals[current_lvl].goal_suit[0];
@@ -549,7 +703,7 @@ function get_random_color() {
 
     //set lvl game
     //sessionStorage.myLvl
-    CMB.game.init(1);
+    CMB.game.init(5);
 
     $(window).keydown(function(e){
         var key = e.keyCode;
