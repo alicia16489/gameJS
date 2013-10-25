@@ -85,6 +85,12 @@ nav ul li a:hover
 
 /* PAGE INDEX */
 
+#index
+{
+    border: 2px solid #444;
+    margin-bottom: 50px;
+}
+
 #legende > ul li
 {
     float: left;
@@ -133,22 +139,29 @@ nav ul li a:hover
 #tips
 {
     width: 30%;
+    height: 164px;
     padding: 15px;
     background-color: #4DA0CE;
     border-bottom: 8px solid #2F7492;
     color: #FFF;
 }
 
-#tips span
+#tips > span
 {
     display: block;
     font-size: 32px;
     margin-bottom: 15px;
 }
 
+#key
+{
+    padding: 0 7px;
+    background-color: #2F7492;
+}
+
 #tips p
 {
-    font-size: 24px;
+    font-size: 18px;
 }
 
 #score
@@ -156,12 +169,33 @@ nav ul li a:hover
     width: 40%;
 }
 
+#score ul
+{
+    padding-top: 10px;
+    margin-bottom: 60px;
+}
+
+#score ul li
+{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    padding-left: 15px;
+    float: left;
+    width: 50%;
+}
+
+#score img
+{
+    display: block;
+    margin: 0 auto;
+}
+
 #menu_btn
 {
     width: 30%;
 }
 
-#menu_btn > ul li
+#menu_btn > ul li a
 {
     display: block;
     width: 100%;
@@ -170,21 +204,22 @@ nav ul li a:hover
     text-align: center;
     color: #FFF;
     font-size: 24px;
+    cursor: pointer;
 }
 
-#menu_btn > ul li:first-child
+#menu_btn > ul li:first-child a
 {
     background-color: #33AC91;
     border-bottom: 8px solid #257B64;
 }
 
-#menu_btn > ul li:nth-child(2)
+#menu_btn > ul li:nth-child(2) a
 {
     background-color: #DB307E;
     border-bottom: 8px solid #A82668;
 }
 
-#menu_btn > ul li:last-child
+#restart a
 {
     background-color: #E84942;
     border-bottom: 8px solid #B73934;

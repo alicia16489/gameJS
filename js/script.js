@@ -555,6 +555,7 @@ function get_random_color() {
         var key = e.keyCode;
         if(key == 37 || key == 38 || key == 39 || key == 40 || key == 66){
             CMB.game.gameLoop(key);
+            e.preventDefault();
         }
     });
 
