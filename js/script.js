@@ -10,12 +10,12 @@ function get_random_color() {
 (function ($) {
     "use strict";
 
+
     var CMB = {};
     (function (CMB) {
         var globals, texture, images, current_lvl, hero, item, load, levels_win;
 
         load = 0;
-
         levels_win = [];
 
         globals = {
@@ -36,6 +36,7 @@ function get_random_color() {
                 floor_img : "./images/floor/floor1.png",
                 hero_img : "./images/hero/small/hero_bot.png",
                 goal_img : "./images/food/food1.png",
+                map_img : "./images/map/map1.png",
 
                 bordures : [153,152,151,150,149,148,147,
                     141,129,117,105,93,
@@ -93,6 +94,24 @@ function get_random_color() {
                 5:{
                     "food":"./images/food/food5.png"
                 }
+            },
+            map : "",
+            map_levels : {
+                1:{
+                    "map":"./images/map/map1.png"
+                }/*,
+                2:{
+                    "map":"./images/map/map2.png"
+                },
+                3:{
+                    "map":"./images/map/map3.png"
+                },
+                4:{
+                    "map":"./images/map/map4.png"
+                },
+                5:{
+                    "map":"./images/map/map5.png"
+                }*/
             },
             hero_levels : {
                 1 : {
@@ -192,19 +211,25 @@ function get_random_color() {
                 images.hero = globals[lvl].hero_img;
                 images.floor = globals[lvl].floor_img;
                 images.goal = globals[lvl].goal_img;
+                images.map = globals[lvl].map_img;
 
                 // async preload imgs + draw
                 CMB.game.loadImages(images);
+
                 //set objects for config lvl
                 globals[lvl].hero_img = images.hero;
                 globals[lvl].floor_img = images.floor;
                 globals[lvl].goal_img = images.goal;
+                globals[lvl].map_img = images.map;
 
                 console.log(images);
             },
             draw : function () {
                 var lvl = current_lvl;
                 var i = 216, col = 0, row = 0;
+
+                //draw map
+
 
                 for (i; i > 0; i--) {
 
@@ -268,6 +293,7 @@ function get_random_color() {
                         row++;
                     }
                 }
+                globals[lvl].context.drawImage(globals[current_lvl].map_img,0,0);
             },
             gameLoop : function (key) {
 
@@ -346,8 +372,6 @@ function get_random_color() {
                 }
                 else if(hero_block.on == "button_on" && next_block.type == "toggle_rock_on"){
                     var arr = globals[current_lvl].toggle_rock_link[hero];
-                    console.log(next);
-                    console.log(arr);
                     if($.inArray(next,arr) != -1){
                         return;
                     }
@@ -379,8 +403,6 @@ function get_random_color() {
 
                     if(next_block.on == "button_on" && next_rock_block.type == "toggle_rock_on"){
                         var arr = globals[current_lvl].toggle_rock_link[next];
-                        console.log(next);
-                        console.log(arr);
                         if($.inArray(next_rock,arr) != -1){
                             return;
                         }
@@ -414,6 +436,8 @@ function get_random_color() {
                 else if(next_block.type == "goal"){
                     delNext = true;
                     levels_win.push(current_lvl);
+                    sessionStorage[current_lvl] = true;
+                    console.log(sessionStorage);
                     globals[current_lvl].win = "true";
                 }
 
@@ -516,13 +540,17 @@ function get_random_color() {
                 }
                 else if(globals[current_lvl].lose == "true"){
                     globals[current_lvl].context.drawImage(images["gameover"],0,0);
+                    //window.location.href = "index.html";
                 }
             }
         };
 
     })(CMB);
 
+    //set lvl game
+    //sessionStorage.myLvl
     CMB.game.init(1);
+
     $(window).keydown(function(e){
         var key = e.keyCode;
         if(key == 37 || key == 38 || key == 39 || key == 40 || key == 66){

@@ -1,0 +1,281 @@
+@import "reset.css";
+
+/* CLASSE GÉNÉRALES */
+
+.clear
+{
+    clear: both;
+}
+
+.center
+{
+    width: 900px;
+    margin: 0 auto;
+}
+
+/* END CLASSE GÉNÉRALES */
+
+
+body
+{
+    font-family: 'Titillium Web', Arial, sans-serif;
+}
+
+
+/* HEADER */
+
+nav
+{
+    background-color: #2b2b2d;
+    margin-bottom: 50px;
+}
+
+nav ul
+{
+    width: 900px;
+    margin: 0 auto;
+}
+
+nav ul li
+{
+    float: left;
+}
+
+nav ul li a
+{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    display: block;
+    width: 300px;
+    padding: 15px 0;
+    text-align: center;
+    color: #FFF;
+    text-decoration: none;
+}
+
+nav ul li:first-child a
+{
+    border-left: 2px solid #cdcdce;
+}
+
+nav ul li a
+{
+    border-left: 1px solid #cdcdce;
+    border-right: 1px solid #cdcdce;
+}
+
+nav ul li:last-child a
+{
+    border-right: 2px solid #cdcdce;
+}
+
+nav ul li a:hover
+{
+    background-color: #3b3b3d;
+}
+
+#logo
+{
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+/* END HEADER */
+
+
+/* PAGE INDEX */
+
+#legende > ul li
+{
+    float: left;
+    padding: 10px 0;
+    font-size: 12px;
+}
+
+#legende > ul li:first-child
+{
+    width: 30%;
+}
+
+#legende > ul li:nth-child(2)
+{
+    width: 33%;
+}
+
+#legende > ul li:nth-child(3)
+{
+    width: 18%;
+}
+
+#legende > ul li:last-child
+{
+    width: 19%;
+}
+
+#legende > ul li img, #legende > ul li span
+{
+    vertical-align: middle;
+}
+
+#menu_jeu
+{
+    padding: 15px;
+    background-color: #80C7BF;
+}
+
+#tips, #score, #menu_btn
+{
+    float: left;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+#tips
+{
+    width: 30%;
+    padding: 15px;
+    background-color: #4DA0CE;
+    border-bottom: 8px solid #2F7492;
+    color: #FFF;
+}
+
+#tips span
+{
+    display: block;
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+#tips p
+{
+    font-size: 24px;
+}
+
+#score
+{
+    width: 40%;
+}
+
+#menu_btn
+{
+    width: 30%;
+}
+
+#menu_btn > ul li
+{
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #FFF;
+    font-size: 24px;
+}
+
+#menu_btn > ul li:first-child
+{
+    background-color: #33AC91;
+    border-bottom: 8px solid #257B64;
+}
+
+#menu_btn > ul li:nth-child(2)
+{
+    background-color: #DB307E;
+    border-bottom: 8px solid #A82668;
+}
+
+#menu_btn > ul li:last-child
+{
+    background-color: #E84942;
+    border-bottom: 8px solid #B73934;
+    margin-bottom: 0;
+}
+
+/* END PAGE INDEX */
+
+
+/* PAGE CRÉATEURS */
+
+#createurs
+{
+    margin-bottom: 50px;
+}
+
+#createurs p
+{
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 18px;
+    padding-top: 50px;
+    margin-bottom: 100px;
+}
+
+#createurs ul li
+{
+    width: 300px;
+    float: left;
+    text-align: center;
+}
+
+#createurs ul li img
+{
+    margin-bottom: 40px;
+}
+
+#createurs ul li ul li
+{
+    margin-bottom: 15px;
+}
+
+/* END PAGE CRÉATEURS */
+
+
+/* PAGE SCÉNARIO */
+
+#scenario img
+{
+    display: block;
+    margin: 0 auto 50px auto;
+}
+
+#scenario p
+{
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 50px;
+}
+
+/* END PAGE SCÉNARIO */
+
+
+/* FOOTER */
+
+footer
+{
+    line-height: 65px;
+    background-color: #40b496;
+    color: #FFF;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+footer.bottom
+{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+footer span
+{
+    vertical-align: middle;
+}
+
+footer div
+{
+    height: 65px;
+    background: url('../images/logoSup.png') no-repeat right 50%;
+}
+
+/* END FOOTER */
+
