@@ -54,7 +54,47 @@ function get_random_color() {
                 137:[100,101,89,102]},
                 goal_suit:[139],
                 goal : []
-            }};
+            },
+            2:{
+                $canvas : '',
+
+                has_bomb : 'false',
+                lose : 'false',
+                win : 'false',
+
+                context : '',
+
+                entities : {
+                    cases : []
+                },
+
+                //config on draw
+                floor_img : "./images/floor/floor2.png",
+                hero_img : "./images/hero/medium/hero_bot.png",
+                goal_img : "./images/food/food2.png",
+                map_img : "./images/map/map1.png",
+
+                bordures : [168,156,144,132,120,108,96
+                    ,84,72,60,167,155,71,59,166,70,58,
+                    165,153,69,57,164,152,68,56,163,
+                    151,139,127,115,91,79,67,55,162,
+                    161,160,159,158,157,54,53,52,51,
+                    50,157,145,133,121,109,97,85,73,
+                    61,49],
+                hero : [112],
+                rock : [127,103,91,125],
+                bomb : [88],
+                hard_rock : [140],
+                hard_rock_on : {140:"fake_goal"},
+                button : [113,137],
+                toggle_rock : [138,126,114,104,92,
+                    100,101,89,102],
+                toggle_rock_link : {113:[138,126,114,104,92],
+                    137:[100,101,89,102]},
+                goal_suit:[139],
+                goal : []
+            }
+        };
 
         images = {
             out : "./images/floor/out.png",
@@ -549,7 +589,7 @@ function get_random_color() {
 
     //set lvl game
     //sessionStorage.myLvl
-    CMB.game.init(1);
+    CMB.game.init(2);
 
     $(window).keydown(function(e){
         var key = e.keyCode;
