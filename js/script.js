@@ -703,7 +703,7 @@ function get_random_color() {
 
     //set lvl game
     //sessionStorage.myLvl
-    CMB.game.init(4);
+    CMB.game.init(5);
 
     $(window).keydown(function(e){
         var key = e.keyCode;
