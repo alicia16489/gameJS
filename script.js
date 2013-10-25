@@ -99,7 +99,7 @@ function get_random_color() {
             map_levels : {
                 1:{
                     "map":"./images/map/map1.png"
-                },
+                }/*,
                 2:{
                     "map":"./images/map/map2.png"
                 },
@@ -111,7 +111,7 @@ function get_random_color() {
                 },
                 5:{
                     "map":"./images/map/map5.png"
-                }
+                }*/
             },
             hero_levels : {
                 1 : {
@@ -229,7 +229,7 @@ function get_random_color() {
                 var i = 216, col = 0, row = 0;
 
                 //draw map
-                //globals[lvl].context.drawImage(globals[current_lvl].map_img,0,0);
+
 
                 for (i; i > 0; i--) {
 
@@ -293,6 +293,7 @@ function get_random_color() {
                         row++;
                     }
                 }
+                globals[lvl].context.drawImage(globals[current_lvl].map_img,0,0);
             },
             gameLoop : function (key) {
 
