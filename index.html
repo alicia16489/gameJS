@@ -1,13 +1,98 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+
 <html>
-<head>
-    <title>gameJS</title>
-</head>
-<body>
-<canvas id="canvas" width="900" height="600"></canvas>
+    <head>
+        <title>I Need To Eat</title>
+        <meta charset="UTF-8" >
+        <meta name="description" content="I Need To Eat" >
 
-<script src="./jquery-1.10.2.min.js"></script>
-<script src="./script.js"></script>
-</body>
+        <link rel="stylesheet" type="text/css" href="./css/style.css">
+        <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+        <link href='http://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
+        <script src="./js/jquery-1.10.2.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="scenario.html">SC&Eacute;NARIO</a>
+                    </li>
+                    <li>
+                        <a href="index.html">JEU</a>
+                    </li>
+                    <li>
+                        <a href="createurs.html">CR&Eacute;ATEURS</a>
+                    </li>
+                </ul>
+                <div class="clear"></div>
+            </nav>
+            <div id="logo">
+                <img src="./images/logo.png" alt="I Need To Eat" width="300">
+            </div>
+        </header>
+        <div id="index" class="center">
+            <canvas id="canvas" width="900" height="600"></canvas>
+            <div id="legende">
+                <ul>
+                    <li>
+                        <img src="./images/legend_os.png" alt="Os"/>
+                        <span>Ne sois pas tenté de le manger</span>
+                    </li>
+                    <li>
+                        <img src="./images/legend_chef.png" alt="Chef"/>
+                        <span>Le cuistot n’aime pas la sauce pimentée</span>
+                    </li>
+                    <li>
+                        <img src="./images/legend_boubeul.png" alt="Boubeul"/>
+                        <span>Boubeul a faim</span>
+                    </li>
+                    <li>
+                        <img src="./images/legend_bomb.png" alt="Tabasco"/>
+                        <span>La sauce piquante</span>
+                    </li>
+                </ul>
+                <div class="clear"></div>
+                <div id="menu_jeu">
+                    <div id="tips">
+                        <span>Astuce :</span>
+                        <p>
+                            Pousse les table aux bons endroits
+                            <br><br>
+                            <span id="key">B</span> : Utiliser la sauce piquante
+                        </p>
+                    </div>
+                    <div id="score">
+                        <ul>
+                            <li>
+                                <strong>Niveau</strong> : 1
+                            </li>
+                        </ul>
+                        <img src="./images/logo.png" alt="I Need To Eat" width="200">
+                    </div>
+                    <div id="menu_btn">
+                        <ul>
+                            <li>
+                                <a href="">Sound ON/OFF</a>
+                            </li>
+                            <li>
+                                <a href="">Retour menu</a>
+                            </li>
+                            <li id="restart">
+                                <a href="./index.html">Recommencer</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="center">
+                <span>&copy; Tous droits r&eacute;serv&eacute;s &agrave; 2013 INeed2EatProduction.</span>
+            </div>
+        </footer>
+
+        <script src="./js/script.js"></script>
+    </body>
 </html>
-
