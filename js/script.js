@@ -13,10 +13,63 @@ function get_random_color() {
 
     var CMB = {};
     (function (CMB) {
-        var globals, texture, images, current_lvl, hero, item, load, levels_win;
+        var globals, texture, images, current_lvl, hero, item, load, levels_win, config, mappingCanvas, editor;
 
         load = 0;
         levels_win = [];
+
+        config = {
+            hero_img : {
+                small : "./images/hero/small/hero_bot.png",
+                medium : "./images/hero/medium/hero_bot.png",
+                tall : "./images/hero/tall/hero_bot.png",
+                rage : "./images/hero/rage/hero_bot.png"
+            }
+        };
+
+        CMB.editor = {
+            before : {
+                x : "",
+                y : ""
+            },
+            current : "",
+            entity : "",
+            map:{
+                $canvas : '',
+
+                has_bomb : 'false',
+                lose : 'false',
+                win : 'false',
+
+                context : '',
+
+                entities : {
+                    cases : []
+                },
+
+                //config on draw
+                floor_img : "1",
+                hero_img : "small",
+                goal_img : "1",
+                hero_img_default : "",
+                map_img : "",
+
+                bordures : [],
+                hero : [],
+                rock : [],
+                bomb : [],
+                hard_rock : [],
+                hard_rock_on : {},
+                button : [],
+                toggle_rock : [],
+                toggle_rock_link : {
+                },
+                goal_suit:[],
+                goal : []
+            }
+        };
+
+        CMB.mappingCanvas = [];
 
         globals = {
             1:{
@@ -33,10 +86,11 @@ function get_random_color() {
                 },
 
                 //config on draw
-                floor_img : "./images/floor/floor1.png",
-                hero_img : "./images/hero/small/hero_bot.png",
-                goal_img : "./images/food/food1.png",
-                map_img : "./images/map/map1.png",
+                floor_img : 1,
+                hero_img : "small",
+                hero_img_default : "",
+                goal_img : 1,
+                map_img : 1,
 
                 bordures : [168,156,144,132,120,108,96
                     ,84,72,60,167,155,71,59,166,70,58,
@@ -71,10 +125,11 @@ function get_random_color() {
                 },
 
                 //config on draw
-                floor_img : "./images/floor/floor2.png",
-                hero_img : "./images/hero/small/hero_bot.png",
-                goal_img : "./images/food/food2.png",
-                map_img : "./images/map/map2.png",
+                floor_img : 2,
+                hero_img : "small",
+                hero_img_default : "",
+                goal_img : 2,
+                map_img : 2,
 
                 bordures : [187,175,164,152,141,129,118,106,93,81,68,56,43,31,66,54,89,77,112,100,125,137,150,162],
                 hero : [163],
@@ -102,10 +157,11 @@ function get_random_color() {
                 },
 
                 //config on draw
-                floor_img : "./images/floor/floor3.png",
-                hero_img : "./images/hero/medium/hero_bot.png",
-                goal_img : "./images/food/food3.png",
-                map_img : "./images/map/map3.png",
+                floor_img : 3,
+                hero_img : "medium",
+                hero_img_default : "",
+                goal_img : 3,
+                map_img : 3,
 
                 bordures : [79,167,155,143,131,119,107,95,83,71,59,58,57,56,55,54,53,52,51,63,75,87,99,111,123,135,147,159,160,161,162,163,164,165,166],
                 hero : [141],
@@ -135,10 +191,11 @@ function get_random_color() {
                 },
 
                 //config on draw
-                floor_img : "./images/floor/floor4.png",
-                hero_img : "./images/hero/tall/hero_bot.png",
-                goal_img : "./images/food/food4.png",
-                map_img : "./images/map/map4.png",
+                floor_img : 4,
+                hero_img : "tall",
+                hero_img_default : "",
+                goal_img : 4,
+                map_img : 4,
 
                 bordures : [215,203,191,179,167,155,
                     143,131,119,107,95,83,71,59,47,
@@ -179,10 +236,11 @@ function get_random_color() {
                 },
 
                 //config on draw
-                floor_img : "./images/floor/floor5.png",
-                hero_img : "./images/hero/rage/hero_bot.png",
-                goal_img : "./images/food/food5.png",
-                map_img : "./images/map/map5.png",
+                floor_img : 5,
+                hero_img : "rage",
+                hero_img_default : "",
+                goal_img : 5,
+                map_img : 5,
 
                 bordures : [153,152,151,150,149,148,147,
                     141,129,117,105,93,
@@ -200,11 +258,10 @@ function get_random_color() {
                     137:[100,101,89,102]},
                 goal_suit:[139],
                 goal : []
-            },
-
+            }
         };
 
-        images = {
+        CMB.images = {
             bordure: "./images/items/bordure.png",
             out : "./images/floor/out.png",
             floor_levels : {
@@ -263,31 +320,25 @@ function get_random_color() {
                 }
             },
             hero_levels : {
-                1 : {
+                small : {
                     "hero_top" : "./images/hero/small/hero_top.png",
                     "hero_left" : "./images/hero/small/hero_left.png",
                     "hero_right" : "./images/hero/small/hero_right.png",
                     "hero_bot" : "./images/hero/small/hero_bot.png"
                 },
-                2 : {
-                    "hero_top" : "./images/hero/small/hero_top.png",
-                    "hero_left" : "./images/hero/small/hero_left.png",
-                    "hero_right" : "./images/hero/small/hero_right.png",
-                    "hero_bot" : "./images/hero/small/hero_bot.png"
-                },
-                3 : {
+                medium : {
                     "hero_top" : "./images/hero/medium/hero_top.png",
                     "hero_left" : "./images/hero/medium/hero_left.png",
                     "hero_right" : "./images/hero/medium/hero_right.png",
                     "hero_bot" : "./images/hero/medium/hero_bot.png"
                 },
-                4 : {
+                tall : {
                     "hero_top" : "./images/hero/tall/hero_top.png",
                     "hero_left" : "./images/hero/tall/hero_left.png",
                     "hero_right" : "./images/hero/tall/hero_right.png",
                     "hero_bot" : "./images/hero/tall/hero_bot.png"
                 },
-                5 : {
+                rage : {
                     "hero_top" : "./images/hero/rage/hero_top.png",
                     "hero_left" : "./images/hero/rage/hero_left.png",
                     "hero_right" : "./images/hero/rage/hero_right.png",
@@ -329,11 +380,11 @@ function get_random_color() {
         };
 
         CMB.game = {
-            loadImages : function(imgs){
+            loadimages : function(imgs){
                 var img;
                 for(var key in imgs){
                     if($.isPlainObject(imgs[key])){
-                        CMB.game.loadImages(imgs[key]);
+                        CMB.game.loadimages(imgs[key]);
                     }
                     else{
                         img = new Image();
@@ -345,80 +396,93 @@ function get_random_color() {
                 }
             },
             preload : function(){
-                var length = Object.keys(images).length;
+                var length = Object.keys(CMB.images).length;
                 load++;
                 if(load === length){
                     CMB.game.draw();
                 }
             },
             init : function (lvl) {
+                var map;
+                if(lvl == "editor"){
+                    map = CMB.editor.map;
+                }
+                else{
+                    map = globals[lvl];
+                }
                 current_lvl = lvl;
-                globals[lvl].$canvas = $("#canvas");
-                globals[lvl].context = globals[lvl].$canvas[0].getContext('2d');
+                map.$canvas = $("#canvas");
+                map.context = map.$canvas[0].getContext('2d');
 
                 //config texture lvl in object
-                images.hero = globals[lvl].hero_img;
-                images.floor = globals[lvl].floor_img;
-                images.goal = globals[lvl].goal_img;
-                images.map = globals[lvl].map_img;
+                CMB.images.hero = "./images/hero/"+ map.hero_img +"/hero_bot.png";
+                CMB.images.floor = CMB.images.floor_levels[map.floor_img].floor;
+                CMB.images.goal = CMB.images.goal_levels[map.goal_img].food;
+
+                if(CMB.images.map_levels[map.map_img] != undefined)
+                    CMB.images.map = CMB.images.map_levels[map.map_img].map;
 
                 // async preload imgs + draw
-                CMB.game.loadImages(images);
+                CMB.game.loadimages(CMB.images);
 
                 //set objects for config lvl
-                globals[lvl].hero_img = images.hero;
-                globals[lvl].floor_img = images.floor;
-                globals[lvl].goal_img = images.goal;
-                globals[lvl].map_img = images.map;
+                map.hero_img_default = CMB.images.hero;
+                map.floor_img = CMB.images.floor;
+                map.goal_img = CMB.images.goal;
+                map.map_img = CMB.images.map;
 
-                console.log(images);
+
             },
             draw : function () {
+                var map;
                 var lvl = current_lvl;
+                if(lvl == "editor"){
+                    map = CMB.editor.map;
+                }
+                else{
+                    map = globals[lvl];
+                }
+
                 var i = 216, col = 0, row = 0;
-
-                //draw map
-
-
                 for (i; i > 0; i--) {
 
                     var type = "";
-                    globals[lvl].context.drawImage(images["floor"],(row * 50),(col * 50));
+                    map.context.drawImage(CMB.images["floor"],(row * 50),(col * 50));
 
-                    if ($.inArray(i,globals[lvl].bordures) != -1) {
-                        globals[lvl].context.drawImage(images["bordure"],(row * 50),(col * 50));
+                    if ($.inArray(i,map.bordures) != -1) {
+                        map.context.drawImage(CMB.images["bordure"],(row * 50),(col * 50));
                         type = "bordure";
                     }
-                    else if($.inArray(i,globals[lvl].hero) != -1){
-                        globals[lvl].context.drawImage(globals[current_lvl].hero_img,(row * 50),(col * 50));
+                    else if($.inArray(i,map.hero) != -1){
+                        map.context.drawImage(globals[current_lvl].hero_img_default,(row * 50),(col * 50));
                         type = "hero";
                     }
-                    else if($.inArray(i,globals[lvl].rock) != -1){
-                        globals[lvl].context.drawImage(images["rock"],(row * 50),(col * 50));
+                    else if($.inArray(i,map.rock) != -1){
+                        map.context.drawImage(CMB.images["rock"],(row * 50),(col * 50));
                         type = "rock";
                     }
-                    else if($.inArray(i,globals[lvl].goal_suit) != -1){
-                        globals[lvl].context.drawImage(images["rock"],(row * 50),(col * 50));
+                    else if($.inArray(i,map.goal_suit) != -1){
+                        map.context.drawImage(CMB.images["rock"],(row * 50),(col * 50));
                         type = "goal_suit";
                     }
-                    else if($.inArray(i,globals[lvl].toggle_rock) != -1){
-                        globals[lvl].context.drawImage(images["toggle_rock_off"],(row * 50),(col * 50));
+                    else if($.inArray(i,map.toggle_rock) != -1){
+                        map.context.drawImage(CMB.images["toggle_rock_off"],(row * 50),(col * 50));
                         type = "toggle_rock_off";
                     }
-                    else if($.inArray(i,globals[lvl].button) != -1){
-                        globals[lvl].context.drawImage(images["button_off"],(row * 50),(col * 50));
+                    else if($.inArray(i,map.button) != -1){
+                        map.context.drawImage(CMB.images["button_off"],(row * 50),(col * 50));
                         type = "button_off";
                     }
-                    else if($.inArray(i,globals[lvl].bomb) != -1){
-                        globals[lvl].context.drawImage(images["bomb"],(row * 50),(col * 50));
+                    else if($.inArray(i,map.bomb) != -1){
+                        map.context.drawImage(CMB.images["bomb"],(row * 50),(col * 50));
                         type = "bomb";
                     }
-                    else if($.inArray(i,globals[lvl].hard_rock) != -1){
-                        globals[lvl].context.drawImage(images["hard_rock"],(row * 50),(col * 50));
+                    else if($.inArray(i,map.hard_rock) != -1){
+                        map.context.drawImage(CMB.images["hard_rock"],(row * 50),(col * 50));
                         type = "hard_rock";
                     }
-                    else if($.inArray(i,globals[lvl].goal) != -1){
-                        globals[lvl].context.drawImage(images["goal"],(row * 50),(col * 50));
+                    else if($.inArray(i,map.goal) != -1){
+                        map.context.drawImage(CMB.images["goal"],(row * 50),(col * 50));
                         type = "goal";
                     }
                     else{
@@ -432,13 +496,25 @@ function get_random_color() {
                     else if(type == "bomb")
                         var object = new item(row,col,type,"floor","movable");
                     else if(type == "hard_rock"){
-                        var underElem = globals[current_lvl].hard_rock_on[i];
+                        var underElem = map.hard_rock_on[i];
                         var object = new item(row,col,type,underElem);
                     }
                     else
                         var object = new texture(row,col,type);
 
-                    globals[lvl].entities.cases[i] = object;
+                    map.entities.cases[i] = object;
+
+                    if($.isArray(CMB.mappingCanvas[row]) == false){
+                        CMB.mappingCanvas[row] = [];
+                    }
+                    CMB.mappingCanvas[row][col] = i;
+
+                    if(CMB.editor.current != ""){
+                        var object = map.entities.cases[CMB.editor.current];
+                        console.log(object);
+                        map.context.drawImage(CMB.images[CMB.editor.entity],(object.x * 50),(object.y * 50));
+                    }
+
 
                     col++;
                     if (col > 11) {
@@ -446,7 +522,7 @@ function get_random_color() {
                         row++;
                     }
                 }
-                globals[lvl].context.drawImage(globals[current_lvl].map_img,0,0);
+                map.context.drawImage(map.map_img,0,0);
             },
             gameLoop : function (key) {
 
@@ -463,23 +539,23 @@ function get_random_color() {
                 // move
                 if(key == 37){
                     next = parseInt(hero) + 12;
-                    globals[current_lvl].hero_img = images.hero_levels[current_lvl].hero_left;
+                    globals[current_lvl].hero_img_default = CMB.images.hero_levels[globals[current_lvl].hero_img].hero_left;
                 }
                 else if(key == 38){
                     next = parseInt(hero) + 1;
-                    globals[current_lvl].hero_img = images.hero_levels[current_lvl].hero_top;
+                    globals[current_lvl].hero_img_default = CMB.images.hero_levels[globals[current_lvl].hero_img].hero_top;
                 }
                 else if(key == 39){
                     next = hero - 12;
-                    globals[current_lvl].hero_img = images.hero_levels[current_lvl].hero_right;
+                    globals[current_lvl].hero_img_default = CMB.images.hero_levels[globals[current_lvl].hero_img].hero_right;
                 }
                 else if(key == 40){
                     next = hero - 1;
-                    globals[current_lvl].hero_img = images.hero_levels[current_lvl].hero_bot;
+                    globals[current_lvl].hero_img_default = CMB.images.hero_levels[globals[current_lvl].hero_img].hero_bot;
                 }
                 var next_block = globals[current_lvl].entities.cases[next];
-                globals[current_lvl].context.drawImage(images[hero_block.on],(hero_block.x * 50),(hero_block.y * 50));
-                globals[current_lvl].context.drawImage(globals[current_lvl].hero_img,(hero_block.x * 50),(hero_block.y * 50));
+                globals[current_lvl].context.drawImage(CMB.images[hero_block.on],(hero_block.x * 50),(hero_block.y * 50));
+                globals[current_lvl].context.drawImage(globals[current_lvl].hero_img_default,(hero_block.x * 50),(hero_block.y * 50));
 
                 if(key == 66){
                     var sigh = globals[current_lvl].hero_img.name.replace("hero_","");
@@ -497,10 +573,10 @@ function get_random_color() {
                     }
                     var next_block = globals[current_lvl].entities.cases[next];
                     if(next_block.type == "hard_rock" && globals[current_lvl].has_bomb == "true"){
-                        globals[current_lvl].context.drawImage(images["floor"],(next_block.x * 50),(next_block.y * 50));
+                        globals[current_lvl].context.drawImage(CMB.images["floor"],(next_block.x * 50),(next_block.y * 50));
 
                         var floor = new item(next_block.x,next_block.y,next_block.on);
-                        globals[current_lvl].context.drawImage(images[next_block.on],(next_block.x * 50),(next_block.y * 50));
+                        globals[current_lvl].context.drawImage(CMB.images[next_block.on],(next_block.x * 50),(next_block.y * 50));
                         globals[current_lvl].entities.cases[next] = floor;
 
                         globals[current_lvl].has_bomb = "false";
@@ -509,8 +585,8 @@ function get_random_color() {
                             var goal = globals[current_lvl].goal_suit[0];
                             var goal_case = globals[current_lvl].entities.cases[goal];
                             var floor = new item(goal_case.x,goal_case.y,"goal","floor");
-                            globals[current_lvl].context.drawImage(images["floor"],(goal_case.x * 50),(goal_case.y * 50));
-                            globals[current_lvl].context.drawImage(images[floor.type],(goal_case.x * 50),(goal_case.y * 50));
+                            globals[current_lvl].context.drawImage(CMB.images["floor"],(goal_case.x * 50),(goal_case.y * 50));
+                            globals[current_lvl].context.drawImage(CMB.images[floor.type],(goal_case.x * 50),(goal_case.y * 50));
                             globals[current_lvl].entities.cases[goal] = floor;
                         }
                     }
@@ -565,10 +641,10 @@ function get_random_color() {
                     var type;
                     prev = next_block.on;
 
-                    globals[current_lvl].context.drawImage(images["floor"],(next_block.x * 50),(next_block.y * 50));
+                    globals[current_lvl].context.drawImage(CMB.images["floor"],(next_block.x * 50),(next_block.y * 50));
 
                     if(prev == "toggle_rock_on")
-                        globals[current_lvl].context.drawImage(images["toggle_rock_on"],(next_block.x * 50),(next_block.y * 50));
+                        globals[current_lvl].context.drawImage(CMB.images["toggle_rock_on"],(next_block.x * 50),(next_block.y * 50));
 
                     if(next_rock_block.type == "button_off")
                         type = "button_on";
@@ -576,7 +652,7 @@ function get_random_color() {
                         type = next_rock_block.type;
 
                     newRock = new item(next_rock_block.x,next_rock_block.y,next_block.type,type,prev);
-                    globals[current_lvl].context.drawImage(images["rock"],(next_rock_block.x * 50),(next_rock_block.y * 50));
+                    globals[current_lvl].context.drawImage(CMB.images["rock"],(next_rock_block.x * 50),(next_rock_block.y * 50));
                     globals[current_lvl].entities.cases[next_rock] = newRock;
                 }
                 else if(next_block.type == "bomb"){
@@ -614,16 +690,16 @@ function get_random_color() {
                     var arr = globals[current_lvl].toggle_rock_link[pos];
                     for(i; i >= 0; i--){
                         var object = globals[current_lvl].entities.cases[arr[i]];
-                        globals[current_lvl].context.drawImage(images["toggle_rock_" + bool],(object.x * 50),(object.y * 50));
+                        globals[current_lvl].context.drawImage(CMB.images["toggle_rock_" + bool],(object.x * 50),(object.y * 50));
                         globals[current_lvl].entities.cases[arr[i]].type = "toggle_rock_" + bool;
                     }
 
                     if(bool == "on"){
-                        globals[current_lvl].context.drawImage(images["floor"],(next_block.x * 50),(next_block.y * 50));
-                        globals[current_lvl].context.drawImage(images["button_on"],(next_block.x * 50),(next_block.y * 50));
+                        globals[current_lvl].context.drawImage(CMB.images["floor"],(next_block.x * 50),(next_block.y * 50));
+                        globals[current_lvl].context.drawImage(CMB.images["button_on"],(next_block.x * 50),(next_block.y * 50));
                     }
                     else{
-                        globals[current_lvl].context.drawImage(images["floor"],(hero_block.x * 50),(hero_block.y * 50));
+                        globals[current_lvl].context.drawImage(CMB.images["floor"],(hero_block.x * 50),(hero_block.y * 50));
                         hero_block.on = "button_off";
                     }
                 }
@@ -637,13 +713,13 @@ function get_random_color() {
                     var arr = globals[current_lvl].toggle_rock_link[pos];
                     for(i; i >= 0; i--){
                         var object = globals[current_lvl].entities.cases[arr[i]];
-                        globals[current_lvl].context.drawImage(images["toggle_rock_" + bool],(object.x * 50),(object.y * 50));
+                        globals[current_lvl].context.drawImage(CMB.images["toggle_rock_" + bool],(object.x * 50),(object.y * 50));
                         globals[current_lvl].entities.cases[arr[i]].type = "toggle_rock_" + bool;
                     }
 
-                    globals[current_lvl].context.drawImage(images["floor"],(next_rock_block.x * 50),(next_rock_block.y * 50));
-                    globals[current_lvl].context.drawImage(images["button_on"],(next_rock_block.x * 50),(next_rock_block.y * 50));
-                    globals[current_lvl].context.drawImage(images["rock"],(next_rock_block.x * 50),(next_rock_block.y * 50));
+                    globals[current_lvl].context.drawImage(CMB.images["floor"],(next_rock_block.x * 50),(next_rock_block.y * 50));
+                    globals[current_lvl].context.drawImage(CMB.images["button_on"],(next_rock_block.x * 50),(next_rock_block.y * 50));
+                    globals[current_lvl].context.drawImage(CMB.images["rock"],(next_rock_block.x * 50),(next_rock_block.y * 50));
                 }
 
 
@@ -653,7 +729,7 @@ function get_random_color() {
                     hero_block.on = "floor";
                 }
                 var floor = new texture(hero_block.x,hero_block.y,hero_block.on);
-                globals[current_lvl].context.drawImage(images[hero_block.on],(hero_block.x * 50),(hero_block.y * 50));
+                globals[current_lvl].context.drawImage(CMB.images[hero_block.on],(hero_block.x * 50),(hero_block.y * 50));
                 globals[current_lvl].entities.cases[hero] = floor;
 
 
@@ -681,19 +757,19 @@ function get_random_color() {
 
                 // new case of hero
                 if(delNext){
-                    globals[current_lvl].context.drawImage(images["floor"],(next_block.x * 50),(next_block.y * 50));
+                    globals[current_lvl].context.drawImage(CMB.images["floor"],(next_block.x * 50),(next_block.y * 50));
                 }
-                globals[current_lvl].context.drawImage(globals[current_lvl].hero_img,(next_block.x * 50),(next_block.y * 50));
+                globals[current_lvl].context.drawImage(globals[current_lvl].hero_img_default,(hero_block.x * 50),(hero_block.y * 50));
                 globals[current_lvl].entities.cases[next] = hero_block;
 
                 // reset number case of hero
                 globals[current_lvl].hero = next;
 
                 if(globals[current_lvl].win == "true"){
-                    globals[current_lvl].context.drawImage(images["win"],0,0);
+                    globals[current_lvl].context.drawImage(CMB.images["win"],0,0);
                 }
                 else if(globals[current_lvl].lose == "true"){
-                    globals[current_lvl].context.drawImage(images["gameover"],0,0);
+                    globals[current_lvl].context.drawImage(CMB.images["gameover"],0,0);
                     //window.location.href = "index.html";
                 }
             }
@@ -703,14 +779,73 @@ function get_random_color() {
 
     //set lvl game
     //sessionStorage.myLvl
-    CMB.game.init(5);
+    console.log(window.location.pathname);
 
-    $(window).keydown(function(e){
-        var key = e.keyCode;
-        if(key == 37 || key == 38 || key == 39 || key == 40 || key == 66){
-            CMB.game.gameLoop(key);
-            e.preventDefault();
-        }
+    var url = window.location.pathname;
+
+    if(url.indexOf("editor.html") != -1){
+        CMB.game.init("editor");
+    }
+    else{
+        CMB.game.init(1);
+        $(window).keydown(function(e){
+            var key = e.keyCode;
+            if(key == 37 || key == 38 || key == 39 || key == 40 || key == 66){
+                CMB.game.gameLoop(key);
+                e.preventDefault();
+            }
+        });
+    }
+
+    function ooo(x,y){
+        var gameX, gameY;
+
+        gameX = parseInt(x/50);
+        gameY = parseInt(y/50);
+        return CMB.mappingCanvas[gameX][gameY];
+    }
+
+    function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+        };
+    }
+    var canvas = document.getElementById('canvas');
+    var onCanvas = false;
+    canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = getMousePos(canvas, evt);
+        var pos = ooo(mousePos.x,mousePos.y);
+        var gameX = parseInt(mousePos.x/50);
+        var gameY = parseInt(mousePos.y/50);
+
+        var entity = CMB.editor.entity;
+        CMB.editor.current = pos;
+
+        console.log(CMB.editor);
+
+        CMB.game.draw();
+    }, false);
+
+    canvas.addEventListener('mouseenter', function(){
+        onCanvas = true;
+    }, false);
+
+    canvas.addEventListener('mouseleave', function(){
+        onCanvas = false;
+    }, false);
+
+    $("input[type=radio]").click(function(){
+        console.log($(this).val());
+       CMB.editor.entity = $(this).val();
     });
 
+    canvas.addEventListener('click', function(evt){
+        console.log("click");
+        var pos;
+        var mousePos = getMousePos(canvas, evt);
+        pos = ooo(mousePos.x,mousePos.y);
+        var texture = $("input[type=radio]:checked").val();
+    }, false);
 })(jQuery);
