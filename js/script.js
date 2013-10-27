@@ -10,10 +10,32 @@ function get_random_color() {
 (function ($) {
     "use strict";
 
+    var texture = function (x,y,type) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        this.value = false;
+    };
+
+    var hero = function (x,y,type,on) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        this.on = on;
+    };
+
+    var item = function (x,y,type,on,prev) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        this.on = on;
+        this.prev = prev;
+    };
+
 
     var CMB = {};
     (function (CMB) {
-        var globals, texture, images, current_lvl, hero, item, load, levels_win, config, mappingCanvas, editor;
+        var globals, images, current_lvl, load, levels_win, config, mappingCanvas, editor;
 
         load = 0;
         levels_win = [];
@@ -54,7 +76,7 @@ function get_random_color() {
                 hero_img_default : "",
                 map_img : "",
 
-                bordures : [],
+                bordure : [],
                 hero : [],
                 rock : [],
                 bomb : [],
@@ -92,7 +114,7 @@ function get_random_color() {
                 goal_img : 1,
                 map_img : 1,
 
-                bordures : [168,156,144,132,120,108,96
+                bordure : [168,156,144,132,120,108,96
                     ,84,72,60,167,155,71,59,166,70,58,
                     165,153,69,57,164,152,68,56,163,
                     151,139,127,115,91,79,67,55,162,
@@ -131,7 +153,7 @@ function get_random_color() {
                 goal_img : 2,
                 map_img : 2,
 
-                bordures : [187,175,164,152,141,129,118,106,93,81,68,56,43,31,66,54,89,77,112,100,125,137,150,162],
+                bordure : [187,175,164,152,141,129,118,106,93,81,68,56,43,31,66,54,89,77,112,100,125,137,150,162],
                 hero : [163],
                 rock : [],
                 bomb : [101],
@@ -163,7 +185,7 @@ function get_random_color() {
                 goal_img : 3,
                 map_img : 3,
 
-                bordures : [79,167,155,143,131,119,107,95,83,71,59,58,57,56,55,54,53,52,51,63,75,87,99,111,123,135,147,159,160,161,162,163,164,165,166],
+                bordure : [79,167,155,143,131,119,107,95,83,71,59,58,57,56,55,54,53,52,51,63,75,87,99,111,123,135,147,159,160,161,162,163,164,165,166],
                 hero : [141],
                 rock : [90,78],
                 bomb : [67],
@@ -197,7 +219,7 @@ function get_random_color() {
                 goal_img : 4,
                 map_img : 4,
 
-                bordures : [215,203,191,179,167,155,
+                bordure : [215,203,191,179,167,155,
                     143,131,119,107,95,83,71,59,47,
                     35,23,11,10,9,8,7,6,5,4,3,2,14,26,
                     38,50,62,74,86,98,110,122,134,145,
@@ -242,7 +264,7 @@ function get_random_color() {
                 goal_img : 5,
                 map_img : 5,
 
-                bordures : [153,152,151,150,149,148,147,
+                bordure : [153,152,151,150,149,148,147,
                     141,129,117,105,93,
                     135,123,111,99,87,
                     81,80,79,78,77,76,75],
@@ -357,28 +379,6 @@ function get_random_color() {
             gameover : "./images/gameover.png"
         };
 
-        texture = function (x,y,type) {
-            this.x = x;
-            this.y = y;
-            this.type = type;
-            this.value = false;
-        };
-
-        hero = function (x,y,type,on) {
-            this.x = x;
-            this.y = y;
-            this.type = type;
-            this.on = on;
-        };
-
-        item = function (x,y,type,on,prev) {
-            this.x = x;
-            this.y = y;
-            this.type = type;
-            this.on = on;
-            this.prev = prev;
-        };
-
         CMB.game = {
             loadimages : function(imgs){
                 var img;
@@ -449,12 +449,12 @@ function get_random_color() {
                     var type = "";
                     map.context.drawImage(CMB.images["floor"],(row * 50),(col * 50));
 
-                    if ($.inArray(i,map.bordures) != -1) {
+                    if ($.inArray(i,map.bordure) != -1) {
                         map.context.drawImage(CMB.images["bordure"],(row * 50),(col * 50));
                         type = "bordure";
                     }
                     else if($.inArray(i,map.hero) != -1){
-                        map.context.drawImage(globals[current_lvl].hero_img_default,(row * 50),(col * 50));
+                        map.context.drawImage(map.hero_img_default,(row * 50),(col * 50));
                         type = "hero";
                     }
                     else if($.inArray(i,map.rock) != -1){
@@ -509,12 +509,10 @@ function get_random_color() {
                     }
                     CMB.mappingCanvas[row][col] = i;
 
-                    if(CMB.editor.current != ""){
+                    /*if(CMB.editor.current != ""){
                         var object = map.entities.cases[CMB.editor.current];
-                        console.log(object);
                         map.context.drawImage(CMB.images[CMB.editor.entity],(object.x * 50),(object.y * 50));
-                    }
-
+                    }*/
 
                     col++;
                     if (col > 11) {
@@ -779,23 +777,7 @@ function get_random_color() {
 
     //set lvl game
     //sessionStorage.myLvl
-    console.log(window.location.pathname);
-
     var url = window.location.pathname;
-
-    if(url.indexOf("editor.html") != -1){
-        CMB.game.init("editor");
-    }
-    else{
-        CMB.game.init(1);
-        $(window).keydown(function(e){
-            var key = e.keyCode;
-            if(key == 37 || key == 38 || key == 39 || key == 40 || key == 66){
-                CMB.game.gameLoop(key);
-                e.preventDefault();
-            }
-        });
-    }
 
     function ooo(x,y){
         var gameX, gameY;
@@ -812,40 +794,106 @@ function get_random_color() {
             y: evt.clientY - rect.top
         };
     }
-    var canvas = document.getElementById('canvas');
-    var onCanvas = false;
-    canvas.addEventListener('mousemove', function(evt) {
-        var mousePos = getMousePos(canvas, evt);
-        var pos = ooo(mousePos.x,mousePos.y);
-        var gameX = parseInt(mousePos.x/50);
-        var gameY = parseInt(mousePos.y/50);
 
-        var entity = CMB.editor.entity;
-        CMB.editor.current = pos;
+    if(url.indexOf("editor.html") != -1){
+        CMB.game.init("editor");
 
-        console.log(CMB.editor);
+        var canvas = document.getElementById('canvas');
+        var onCanvas = false;
+        canvas.addEventListener('mousemove', function(evt) {
+            var mousePos = getMousePos(canvas, evt);
+            var pos = ooo(mousePos.x,mousePos.y);
 
-        CMB.game.draw();
-    }, false);
+            if(pos != CMB.editor.current){
+                var object = CMB.editor.map.entities.cases[CMB.editor.current];
+                if(object != undefined){
+                    CMB.editor.map.context.drawImage(CMB.images["floor"],(object.x * 50),(object.y * 50));
+                    CMB.editor.map.context.drawImage(CMB.images[object.type],(object.x * 50),(object.y * 50));
+                }
+            }
 
-    canvas.addEventListener('mouseenter', function(){
-        onCanvas = true;
-    }, false);
+            var obBefore = CMB.editor.map.entities.cases[pos];
+            CMB.editor.before = obBefore.type;
+            CMB.editor.current = pos;
+            var object = CMB.editor.map.entities.cases[CMB.editor.current];
+            CMB.editor.map.context.drawImage(CMB.images[CMB.editor.entity],(object.x * 50),(object.y * 50));
+        }, false);
 
-    canvas.addEventListener('mouseleave', function(){
-        onCanvas = false;
-    }, false);
+        $("input[type=radio]").click(function(){
+            if($(this).attr("name") == "texture")
+                CMB.editor.entity = $(this).val();
+            else if($(this).attr("name") == "config_floor"){
+                CMB.images.floor = CMB.images.floor_levels[$(this).val()].floor;
+                CMB.game.draw();
+            }
+            else if($(this).attr("name") == "config_hero"){
+                CMB.images.hero = CMB.images.hero_levels[$(this).val()].hero_bot;
+                CMB.editor.map.hero_img_default = CMB.images.hero_levels[$(this).val()].hero_bot;
+                CMB.game.draw();
+            }
+            else if($(this).attr("name") == "config_goal"){
+                CMB.images.goal = CMB.images.goal_levels[$(this).val()].food;
+                CMB.game.draw();
+            }
+        });
 
-    $("input[type=radio]").click(function(){
-        console.log($(this).val());
-       CMB.editor.entity = $(this).val();
-    });
+        $("img[id=hero_src]").attr("src",$("input[name=config_hero]:checked").attr("data-src"));
 
-    canvas.addEventListener('click', function(evt){
-        console.log("click");
-        var pos;
-        var mousePos = getMousePos(canvas, evt);
-        pos = ooo(mousePos.x,mousePos.y);
-        var texture = $("input[type=radio]:checked").val();
-    }, false);
+        canvas.addEventListener('click', function(evt){
+            console.log("click");
+            var mousePos = getMousePos(canvas, evt);
+            var pos = ooo(mousePos.x,mousePos.y);
+            var x = parseInt(mousePos.x/50);
+            var y = parseInt(mousePos.y/50);
+            var type = CMB.editor.entity;
+
+            if(type == "hero" && CMB.editor.map.hero[0] != undefined)
+                return;
+
+            if(type == "goal" && CMB.editor.map.goal[0] != undefined)
+                return;
+
+            if(type == "hero")
+                var object = new hero(x,y,type,"floor");
+            else if(type == "rock")
+                var object = new item(x,y,type,"floor","dropable");
+            else if(type == "bomb")
+                var object = new item(x,y,type,"floor","movable");
+            else if(type == "hard_rock"){
+                var underElem = CMB.editor.map.hard_rock_on[pos];
+                var object = new item(x,y,type,underElem);
+            }
+            else
+                var object = new texture(x,y,type);
+
+            if($.inArray(pos,CMB.editor.map[type]) == -1){
+                var oldObject = CMB.editor.map.entities.cases[pos];
+                var arr = CMB.editor.map[oldObject.type];
+                if(arr != undefined){
+                    console.log(arr);
+                    arr.splice(arr.indexOf(pos),1);
+                }
+
+                if(type != "floor")
+                    CMB.editor.map[type.replace("_off","")].push(pos);
+            }
+
+            CMB.editor.map.entities.cases[pos] = object;
+
+            CMB.editor.map.context.drawImage(CMB.images["floor"],(object.x * 50),(object.y * 50));
+            CMB.editor.map.context.drawImage(CMB.images[CMB.editor.entity],(object.x * 50),(object.y * 50));
+        }, false);
+    }
+    else{
+        CMB.game.init(1);
+        $(window).keydown(function(e){
+            var key = e.keyCode;
+            if(key == 37 || key == 38 || key == 39 || key == 40 || key == 66){
+                CMB.game.gameLoop(key);
+                e.preventDefault();
+            }
+        });
+    }
+
+
 })(jQuery);
