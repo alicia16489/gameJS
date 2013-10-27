@@ -54,6 +54,7 @@ function get_random_color() {
                 x : "",
                 y : ""
             },
+            current_button : "",
             current : "",
             entity : "",
             map:{
@@ -376,7 +377,9 @@ function get_random_color() {
             button_on : "./images/items/button_on.png",
             fake_goal : "./images/food/badFood.png",
             win : "./images/win.png",
-            gameover : "./images/gameover.png"
+            gameover : "./images/gameover.png",
+            button_selected : "./images/items/button_selected.png",
+            toggle_rock_selected : "./images/items/toggle_rock_selected.png"
         };
 
         CMB.game = {
@@ -665,7 +668,6 @@ function get_random_color() {
                     delNext = true;
                     levels_win.push(current_lvl);
                     sessionStorage[current_lvl] = true;
-                    console.log(sessionStorage);
                     globals[current_lvl].win = "true";
                 }
 
@@ -808,7 +810,11 @@ function get_random_color() {
                 var object = CMB.editor.map.entities.cases[CMB.editor.current];
                 if(object != undefined){
                     CMB.editor.map.context.drawImage(CMB.images["floor"],(object.x * 50),(object.y * 50));
+                    if(CMB.editor.current == CMB.editor.current_button)
+                        CMB.editor.map.context.drawImage(CMB.images["button_selected"],(object.x * 50),(object.y * 50));
                     CMB.editor.map.context.drawImage(CMB.images[object.type],(object.x * 50),(object.y * 50));
+                    if($.inArray(CMB.editor.current,CMB.editor.map.toggle_rock_link[CMB.editor.current_button]) != -1)
+                        CMB.editor.map.context.drawImage(CMB.images["toggle_rock_selected"],(object.x * 50),(object.y * 50));
                 }
             }
 
@@ -816,7 +822,18 @@ function get_random_color() {
             CMB.editor.before = obBefore.type;
             CMB.editor.current = pos;
             var object = CMB.editor.map.entities.cases[CMB.editor.current];
-            CMB.editor.map.context.drawImage(CMB.images[CMB.editor.entity],(object.x * 50),(object.y * 50));
+            if(CMB.editor.entity == "config_button" && obBefore.type == "button_off"){
+                CMB.editor.map.context.drawImage(CMB.images["floor"],(object.x * 50),(object.y * 50));
+                CMB.editor.map.context.drawImage(CMB.images["button_selected"],(object.x * 50),(object.y * 50));
+                CMB.editor.map.context.drawImage(CMB.images[object.type],(object.x * 50),(object.y * 50));
+            }
+            else if(CMB.editor.entity == "config_button" && obBefore.type == "toggle_rock_off" && CMB.editor.current_button != ""){
+                CMB.editor.map.context.drawImage(CMB.images["floor"],(object.x * 50),(object.y * 50));
+                CMB.editor.map.context.drawImage(CMB.images[object.type],(object.x * 50),(object.y * 50));
+                CMB.editor.map.context.drawImage(CMB.images["toggle_rock_selected"],(object.x * 50),(object.y * 50));
+            }
+            else
+                CMB.editor.map.context.drawImage(CMB.images[CMB.editor.entity],(object.x * 50),(object.y * 50));
         }, false);
 
         $("input[type=radio]").click(function(){
@@ -840,7 +857,6 @@ function get_random_color() {
         $("img[id=hero_src]").attr("src",$("input[name=config_hero]:checked").attr("data-src"));
 
         canvas.addEventListener('click', function(evt){
-            console.log("click");
             var mousePos = getMousePos(canvas, evt);
             var pos = ooo(mousePos.x,mousePos.y);
             var x = parseInt(mousePos.x/50);
@@ -866,22 +882,105 @@ function get_random_color() {
             else
                 var object = new texture(x,y,type);
 
-            if($.inArray(pos,CMB.editor.map[type]) == -1){
+            if(object.type == "config_button"){
                 var oldObject = CMB.editor.map.entities.cases[pos];
-                var arr = CMB.editor.map[oldObject.type];
-                if(arr != undefined){
-                    console.log(arr);
-                    arr.splice(arr.indexOf(pos),1);
+
+                if(oldObject.type == "button_off"){
+                    if(pos == CMB.editor.current_button){
+                        CMB.editor.map.context.drawImage(CMB.images["floor"],(object.x * 50),(object.y * 50));
+                        CMB.editor.map.context.drawImage(CMB.images[oldObject.type],(object.x * 50),(object.y * 50));
+                        CMB.editor.current_button = "";
+
+                        // handle toggle_rock selected
+                        var childs = CMB.editor.map.toggle_rock_link[pos];
+                        if(childs != undefined){
+                            for(var i =0; i < childs.length; i++)
+                            {
+                                var child = CMB.editor.map.entities.cases[childs[i]];
+                                CMB.editor.map.context.drawImage(CMB.images["floor"],(child.x * 50),(child.y * 50));
+                                CMB.editor.map.context.drawImage(CMB.images[child.type],(child.x * 50),(child.y * 50));
+                            }
+
+                            return;
+                        }
+                    }
+
+                    if(CMB.editor.current_button != ""){
+                        var oldSelect = CMB.editor.map.entities.cases[CMB.editor.current_button];
+                        CMB.editor.map.context.drawImage(CMB.images["floor"],(oldSelect.x * 50),(oldSelect.y * 50));
+                        CMB.editor.map.context.drawImage(CMB.images[oldSelect.type],(oldSelect.x * 50),(oldSelect.y * 50));
+
+                        // handle toggle_rock selected
+                        var childs = CMB.editor.map.toggle_rock_link[CMB.editor.current_button];
+                        if(childs != undefined){
+                            for(var i =0; i < childs.length; i++)
+                            {
+                                var child = CMB.editor.map.entities.cases[childs[i]];
+                                CMB.editor.map.context.drawImage(CMB.images["floor"],(child.x * 50),(child.y * 50));
+                                CMB.editor.map.context.drawImage(CMB.images[child.type],(child.x * 50),(child.y * 50));
+                            }
+                        }
+                    }
+
+                    CMB.editor.current_button = pos;
+                    CMB.editor.map.context.drawImage(CMB.images["floor"],(object.x * 50),(object.y * 50));
+                    CMB.editor.map.context.drawImage(CMB.images["button_selected"],(object.x * 50),(object.y * 50));
+                    CMB.editor.map.context.drawImage(CMB.images[oldObject.type],(object.x * 50),(object.y * 50));
+
+                    // handle toggle_rock selected
+                    var childs = CMB.editor.map.toggle_rock_link[CMB.editor.current_button];
+                    if(childs != undefined){
+                        for(var i =0; i < childs.length; i++)
+                        {
+                            var child = CMB.editor.map.entities.cases[childs[i]];
+                            CMB.editor.map.context.drawImage(CMB.images["floor"],(child.x * 50),(child.y * 50));
+                            CMB.editor.map.context.drawImage(CMB.images[child.type],(child.x * 50),(child.y * 50));
+                            CMB.editor.map.context.drawImage(CMB.images["toggle_rock_selected"],(child.x * 50),(child.y * 50));
+                        }
+                    }
+                }
+                else if(oldObject.type == "toggle_rock_off"){
+
+                    if(CMB.editor.current_button != ""){
+                        var button_pos = CMB.editor.current_button;
+                        if($.inArray(pos,CMB.editor.map.toggle_rock_link[button_pos]) != -1){
+                            var arrPos = CMB.editor.map.toggle_rock_link[button_pos].indexOf(pos);
+                            CMB.editor.map.toggle_rock_link[button_pos].splice(arrPos,1);
+                            CMB.editor.map.context.drawImage(CMB.images["floor"],(object.x * 50),(object.y * 50));
+                            CMB.editor.map.context.drawImage(CMB.images[oldObject.type],(object.x * 50),(object.y * 50));
+
+                            return;
+                        }
+
+                        CMB.editor.map.context.drawImage(CMB.images["floor"],(object.x * 50),(object.y * 50));
+                        CMB.editor.map.context.drawImage(CMB.images[oldObject.type],(object.x * 50),(object.y * 50));
+                        if($.inArray(pos,CMB.editor.map.toggle_rock_link[button_pos]) == -1)
+                            CMB.editor.map.context.drawImage(CMB.images["toggle_rock_selected"],(object.x * 50),(object.y * 50));
+
+                        if(CMB.editor.map.toggle_rock_link[button_pos] == undefined)
+                            CMB.editor.map.toggle_rock_link[button_pos] = [];
+                        if($.inArray(pos,CMB.editor.map.toggle_rock_link[button_pos]) == -1)
+                            CMB.editor.map.toggle_rock_link[button_pos].push(pos);
+                    }
+                }
+            }
+            else{
+                if($.inArray(pos,CMB.editor.map[type]) == -1){
+                    var oldObject = CMB.editor.map.entities.cases[pos];
+                    var arr = CMB.editor.map[oldObject.type];
+                    if(arr != undefined){
+                        arr.splice(arr.indexOf(pos),1);
+                    }
+
+                    if(type != "floor")
+                        CMB.editor.map[type.replace("_off","")].push(pos);
                 }
 
-                if(type != "floor")
-                    CMB.editor.map[type.replace("_off","")].push(pos);
+                CMB.editor.map.entities.cases[pos] = object;
+                CMB.editor.map.context.drawImage(CMB.images["floor"],(object.x * 50),(object.y * 50));
+                CMB.editor.map.context.drawImage(CMB.images[CMB.editor.entity],(object.x * 50),(object.y * 50));
             }
-
-            CMB.editor.map.entities.cases[pos] = object;
-
-            CMB.editor.map.context.drawImage(CMB.images["floor"],(object.x * 50),(object.y * 50));
-            CMB.editor.map.context.drawImage(CMB.images[CMB.editor.entity],(object.x * 50),(object.y * 50));
+            console.log(CMB.editor.map);
         }, false);
     }
     else{
