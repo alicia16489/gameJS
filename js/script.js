@@ -57,38 +57,65 @@ function get_random_color() {
             current_button : "",
             current : "",
             entity : "",
-            map:{
-                $canvas : '',
+            test : {
+                '$canvas' : '',
 
-                has_bomb : 'false',
-                lose : 'false',
-                win : 'false',
+                'has_bomb' : 'false',
+                'lose' : 'false',
+                'win' : 'false',
 
-                context : '',
+                'context' : '',
 
-                entities : {
-                    cases : []
-                },
+                'entities' : {'cases' : []},
 
                 //config on draw
-                floor_img : "1",
-                hero_img : "small",
-                goal_img : "1",
-                hero_img_default : "",
-                map_img : "",
+                'floor_img' : "1",
+                'hero_img' : "small",
+                'goal_img' : "1",
+                'hero_img_default' : "",
+                'map_img' : "",
 
-                bordure : [],
-                hero : [],
-                rock : [],
-                bomb : [],
-                hard_rock : [],
-                hard_rock_on : {},
-                button : [],
-                toggle_rock : [],
-                toggle_rock_link : {
-                },
-                goal_suit:[],
-                goal : []
+                'bordure' : [],
+                'hero' : [],
+                'rock' : [],
+                'bomb' : [],
+                'hard_rock' : [],
+                'hard_rock_on' : {},
+                'button' : [],
+                'toggle_rock' : [],
+                'toggle_rock_link' : {},
+                'goal_suit':[],
+                'goal' : []
+            },
+            map:{
+                '$canvas' : '',
+
+                'has_bomb' : 'false',
+                'lose' : 'false',
+                'win' : 'false',
+
+                'context' : '',
+
+                'entities' : {'cases' : []},
+
+                //config on draw
+                'floor_img' : "1",
+                'hero_img' : "small",
+                'goal_img' : "1",
+                'hero_img_default' : "",
+                'map_img' : "",
+
+                'bordure' : [],
+                'hero' : [],
+                'rock' : [],
+                'bomb' : [],
+                'hard_rock' : [],
+                //'hard_rock_on' : {},
+                'button' : [],
+                'toggle_rock' : [],
+                //'toggle_rock_link' : {},
+                'goal_suit':[],
+                'goal' : []
             }
         };
 
@@ -798,6 +825,8 @@ function get_random_color() {
     }
 
     if(url.indexOf("editor.html") != -1){
+        console.log(CMB.editor.map);
+        console.log(JSON.stringify(CMB.editor.map));
         CMB.game.init("editor");
 
         var canvas = document.getElementById('canvas');
@@ -852,6 +881,36 @@ function get_random_color() {
                 CMB.images.goal = CMB.images.goal_levels[$(this).val()].food;
                 CMB.game.draw();
             }
+        });
+
+        $("#save").click(function(){
+            CMB.editor.map.$canvas = "";
+            CMB.editor.map.context = "";
+            CMB.editor.map.entities.cases = [];
+            CMB.editor.map.map_img = "";
+            CMB.editor.map.hero_img_default = "";
+
+            console.log(CMB.editor.map.goal_img);
+            var src = CMB.editor.map.floor_img.src;
+            var cfg = src.replace("file:///C:/Users/Hirumi/PhpstormProjects/gameJS/images/floor/floor","").replace(".png","");
+            CMB.editor.map.floor_img = cfg;
+            var src = CMB.editor.map.goal_img.src;
+            var cfg = src.replace("file:///C:/Users/Hirumi/PhpstormProjects/gameJS/images/food/food","").replace(".png","");
+            CMB.editor.map.goal_img = cfg;
+
+            console.log(CMB.editor.map);
+            console.log(JSON.stringify(CMB.editor.map));
+;
+            var testObject = CMB.editor.test;
+
+            // Put the object into storage
+            localStorage.setItem('testObject', JSON.stringify(CMB.editor.map));
+
+            // Retrieve the object from storage
+            var retrievedObject = localStorage.getItem('testObject');
+
+            console.log('retrievedObject: ', JSON.parse(retrievedObject));
+
         });
 
         $("img[id=hero_src]").attr("src",$("input[name=config_hero]:checked").attr("data-src"));
