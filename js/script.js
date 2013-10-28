@@ -586,7 +586,10 @@ function get_random_color() {
                 globals[current_lvl].context.drawImage(globals[current_lvl].hero_img_default,(hero_block.x * 50),(hero_block.y * 50));
 
                 if(key == 66){
-                    var sigh = globals[current_lvl].hero_img.name.replace("hero_","");
+                    console.log(globals[current_lvl].hero_img_default);
+                    var arr = globals[current_lvl].hero_img_default.src.split("/");
+                    var sigh = arr[11].replace("hero_","").replace(".png","");
+                    console.log(sigh);
                     if(sigh == "left"){
                         next = parseInt(hero) + 12;
                     }
