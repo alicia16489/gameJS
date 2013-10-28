@@ -102,17 +102,50 @@ nav ul li a:hover
 
 #index > ul
 {
-    width: 150px;
+    width: 200px;
+    padding: 10px 5px 5px 5px;
+    background-color: #FFF;
+    border-top: 2px solid #444;
+    border-bottom: 2px solid #444;
+    border-right: 2px solid #444;
 
     position: absolute;
-    top: 0;
+    top: -2px;
     left: 900px;
+}
+
+#index > ul li
+{
+    margin-bottom: 25px;
+}
+
+#index > ul li:last-child
+{
+    margin-bottom: 0;
+}
+
+#index > ul li span
+{
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    float: left;
+    padding-left: 10px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 150px;
+}
+
+#index > ul li img
+{
+    float: left;
+    vertical-align: middle;
 }
 
 #legende > ul li
 {
     float: left;
     padding: 10px 0;
+    margin-bottom: 10px;
     font-size: 12px;
 }
 
