@@ -110,10 +110,10 @@ function get_random_color() {
                 'rock' : [],
                 'bomb' : [],
                 'hard_rock' : [],
-                //'hard_rock_on' : {},
+                'hard_rock_on' : {},
                 'button' : [],
                 'toggle_rock' : [],
-                //'toggle_rock_link' : {},
+                'toggle_rock_link' : {},
                 'goal_suit':[],
                 'goal' : []
             }
@@ -892,24 +892,23 @@ function get_random_color() {
 
             console.log(CMB.editor.map.goal_img);
             var src = CMB.editor.map.floor_img.src;
-            var cfg = src.replace("file:///C:/Users/Hirumi/PhpstormProjects/gameJS/images/floor/floor","").replace(".png","");
+            var rep = "./images/floor/floor";
+            var cfg = src.replace("file:///C:/Users/SUPINTERNET/PhpstormProjects/gameJS/images/floor/floor","").replace(".png","");
             CMB.editor.map.floor_img = cfg;
             var src = CMB.editor.map.goal_img.src;
-            var cfg = src.replace("file:///C:/Users/Hirumi/PhpstormProjects/gameJS/images/food/food","").replace(".png","");
+            var cfg = src.replace("file:///C:/Users/SUPINTERNET/PhpstormProjects/gameJS/images/food/food","").replace(".png","");
             CMB.editor.map.goal_img = cfg;
 
             console.log(CMB.editor.map);
             console.log(JSON.stringify(CMB.editor.map));
-;
-            var testObject = CMB.editor.test;
 
             // Put the object into storage
-            localStorage.setItem('testObject', JSON.stringify(CMB.editor.map));
+            localStorage.setItem('save1', JSON.stringify(CMB.editor.map));
 
             // Retrieve the object from storage
-            var retrievedObject = localStorage.getItem('testObject');
+            var retrievedObject = localStorage.getItem('save1');
 
-            console.log('retrievedObject: ', JSON.parse(retrievedObject));
+            console.log('Save 1: ', JSON.parse(retrievedObject));
 
         });
 
@@ -1043,7 +1042,18 @@ function get_random_color() {
         }, false);
     }
     else{
-        CMB.game.init(1);
+
+        var first = true;
+        $("#levels li").click(function(){
+            CMB.game.init($(this).attr("id"));
+            $("#lvl_choice").text($(this).attr("id"));
+
+            $('#index').show();
+            $('#levels').hide();
+
+            first = false;
+        });
+
         $(window).keydown(function(e){
             var key = e.keyCode;
             if(key == 37 || key == 38 || key == 39 || key == 40 || key == 66){

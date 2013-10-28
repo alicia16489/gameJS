@@ -1,6 +1,6 @@
 @import "reset.css";
 
-/* CLASSE GÉNÉRALES */
+/* CLASSES GÉNÉRALES */
 
 .clear
 {
@@ -13,12 +13,18 @@
     margin: 0 auto;
 }
 
-/* END CLASSE GÉNÉRALES */
+.locked
+{
+    background: url("../images/lock.png") no-repeat 95% 50%;
+}
+
+/* END CLASSES GÉNÉRALES */
 
 
 body
 {
     font-family: 'Titillium Web', Arial, sans-serif;
+    background: url("../images/p2.png") center top;
 }
 
 
@@ -89,6 +95,18 @@ nav ul li a:hover
 {
     border: 2px solid #444;
     margin-bottom: 50px;
+    display: none;
+
+    position: relative;
+}
+
+#index > ul
+{
+    width: 150px;
+
+    position: absolute;
+    top: 0;
+    left: 900px;
 }
 
 #legende > ul li
@@ -227,6 +245,147 @@ nav ul li a:hover
     border-bottom: 8px solid #B73934;
     margin-bottom: 0;
 }
+
+#start, #cmd, #levels
+{
+    text-align: center;
+    margin-bottom: 75px;
+}
+
+#start img, #cmd img
+{
+    margin-bottom: 50px;
+}
+
+#start p
+{
+    padding: 20px 0;
+    margin-bottom: 60px;
+    background-color: #D75E9E;
+    font-size: 28px;
+    color: #FFF;
+}
+
+#start span
+{
+    display: inline-block;
+    padding: 15px 0;
+    width: 330px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #FFF;
+    cursor: pointer;
+}
+
+#start span.btn_cmd
+{
+    background-color: #3B8EC3;
+    border-bottom: 8px solid #2C6B8E;
+    margin-right: 25px;
+}
+
+#start span.btn_cmd:hover
+{
+    background-color: #2C6B8E;
+    border-bottom: 8px solid #3B8EC3;
+}
+
+#start span.btn_play
+{
+    background-color: #41B395;
+    border-bottom: 8px solid #318970;
+}
+
+#start span.btn_play:hover
+{
+    background-color: #318970;
+    border-bottom: 8px solid #41B395;
+}
+
+#cmd
+{
+    display: none;
+}
+
+#cmd p
+{
+    font-size: 48px;
+    margin-bottom: 60px;
+}
+
+#cmd span, #levels span
+{
+    display: inline-block;
+    padding: 15px 0;
+    width: 330px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #FFF;
+    background-color: #D15297;
+    border-bottom: 8px solid #AD4582;
+    cursor: pointer;
+}
+
+#cmd span:hover, #levels span:hover
+{
+    background-color: #AD4582;
+    border-bottom: 8px solid #D15297;
+}
+
+#levels
+{
+    display: none;
+}
+
+#levels ul
+{
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+
+    margin-bottom: 50px;
+}
+
+#levels ul li
+{
+    padding: 15px 0;
+    margin-bottom: 15px;
+    font-size: 45px;
+    font-weight: bold;
+    color: #FFF;
+    cursor: pointer;
+}
+
+#levels ul li:nth-child(5n-4)
+{
+    background-color: #319B86;
+    border-bottom: 8px solid #267263;
+}
+
+#levels ul li:nth-child(5n-3)
+{
+    background-color: #F6A42D;
+    border-bottom: 8px solid #EC9625;
+}
+
+#levels ul li:nth-child(5n-2)
+{
+    background-color: #CF0A63;
+    border-bottom: 8px solid #B21257;
+}
+
+#levels ul li:nth-child(5n-1)
+{
+    background-color: #FDCA27;
+    border-bottom: 8px solid #E9B125;
+}
+
+#levels ul li:nth-child(5n)
+{
+    background-color: #D43322;
+    border-bottom: 8px solid #A6281B;
+}
+
 
 /* END PAGE INDEX */
 
