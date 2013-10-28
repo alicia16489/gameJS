@@ -299,7 +299,7 @@ nav ul li a:hover
     color: #FFF;
 }
 
-#start span
+#start a
 {
     display: inline-block;
     padding: 15px 0;
@@ -310,26 +310,26 @@ nav ul li a:hover
     cursor: pointer;
 }
 
-#start span.btn_cmd
+#start a.btn_cmd
 {
     background-color: #3B8EC3;
     border-bottom: 8px solid #2C6B8E;
     margin-right: 25px;
 }
 
-#start span.btn_cmd:hover
+#start a.btn_cmd:hover
 {
     background-color: #2C6B8E;
     border-bottom: 8px solid #3B8EC3;
 }
 
-#start span.btn_play
+#start a.btn_play
 {
     background-color: #41B395;
     border-bottom: 8px solid #318970;
 }
 
-#start span.btn_play:hover
+#start a.btn_play:hover
 {
     background-color: #318970;
     border-bottom: 8px solid #41B395;
@@ -346,7 +346,7 @@ nav ul li a:hover
     margin-bottom: 60px;
 }
 
-#cmd span, #levels span
+#cmd span, #levels a
 {
     display: inline-block;
     padding: 15px 0;
@@ -363,11 +363,6 @@ nav ul li a:hover
 {
     background-color: #AD4582;
     border-bottom: 8px solid #D15297;
-}
-
-#levels
-{
-    display: none;
 }
 
 #levels ul
